@@ -8,12 +8,14 @@
 import Foundation
 
 public protocol DynamicObservableObject: ObservableObjectItem {
-    static func publisherKey(_ identity: String) -> String
-    static func createPublisher(_ identity: String) -> Self
+    associatedtype IdentityType: Hashable
+    
+    static func publisherKey(_ identity: IdentityType) -> String
+    static func createPublisher(_ identity: IdentityType) -> Self
 }
 
 public extension DynamicObservableObject {
-    static func getPublisher(_ identity: String) -> Self {
+    static func getPublisher(_ identity: IdentityType) -> Self {
         Self.getPublisher(key: publisherKey(identity)) {
             Self.createPublisher(identity)
         }

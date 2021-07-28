@@ -9,6 +9,13 @@ final class PublisherStorageTests: XCTestCase {
         XCTAssertIdentical(dynamic, secondDynamic)
     }
     
+    func testIdenticalPublishers2() {
+        let dynamic = DynamicInt.getPublisher(100)
+        let secondDynamic = DynamicInt.getPublisher(100)
+        
+        XCTAssertIdentical(dynamic, secondDynamic)
+    }
+    
     func testIdenticalContent() {
         let dynamic = Dynamic.getPublisher("test")
         let secondDynamic = Dynamic.getPublisher("test")
@@ -39,5 +46,25 @@ extension Dynamic: DynamicObservableObject {
     
     static func createPublisher(_ identity: String) -> Dynamic {
         Dynamic(id: identity)
+    }
+}
+
+final class DynamicInt {
+    var id: Int
+    
+    init(id: Int) {
+        self.id = id
+    }
+}
+
+extension DynamicInt: DynamicObservableObject {
+    typealias IdentityType = Int
+    
+    static func publisherKey(_ identity: Int) -> String {
+        "dynamic_int_\(identity)"
+    }
+    
+    static func createPublisher(_ identity: Int) -> DynamicInt {
+        DynamicInt(id: identity)
     }
 }
